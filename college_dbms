@@ -1,0 +1,77 @@
+-- Create Student Table
+CREATE TABLE Student (
+    StudentID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    DateOfBirth DATE,
+    EmailAddress VARCHAR(100),
+    ResidenceAddress VARCHAR(255),
+    DepartmentName VARCHAR(50),
+    DepartmentID INT,
+    EnrollmentID INT,
+    FOREIGN KEY (DepartmentID) REFERENCES Department(DepartmentID),
+    FOREIGN KEY (EnrollmentID) REFERENCES Enrollment(EnrollmentID)
+);
+
+-- Create Enrollment Table
+CREATE TABLE Enrollment (
+    EnrollmentID INT PRIMARY KEY,
+    StudentID INT,
+    CourseID INT,
+    TutorID INT,
+    FOREIGN KEY (StudentID) REFERENCES Student(StudentID),
+    FOREIGN KEY (CourseID) REFERENCES Course(CourseID),
+    FOREIGN KEY (TutorID) REFERENCES Tutor(TutorID)
+);
+
+-- Create Tutor Table
+CREATE TABLE Tutor (
+    TutorID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    EmailAddress VARCHAR(100),
+    ResidenceAddress VARCHAR(255),
+    PhoneNumber VARCHAR(15),
+    CourseID INT,
+    DepartmentID INT,
+    FOREIGN KEY (CourseID) REFERENCES Course(CourseID),
+    FOREIGN KEY (DepartmentID) REFERENCES Department(DepartmentID)
+);
+
+-- Create Course Table
+CREATE TABLE Course (
+    CourseID INT PRIMARY KEY,
+    CourseName VARCHAR(50),
+    TutorID INT,
+    FOREIGN KEY (TutorID) REFERENCES Tutor(TutorID)
+);
+
+-- Create Department Table
+CREATE TABLE Department (
+    DepartmentID INT PRIMARY KEY,
+    DepartmentName VARCHAR(27),
+    CollegeName VARCHAR(27),
+    Facility VARCHAR(17),
+    CourseID INT,
+    TutorIDs VARCHAR(255), -- List of tutors in the department (denormalized for simplicity)
+    FOREIGN KEY (CourseID) REFERENCES Tutor(CourseID)
+);
+
+-- CRUD Operations (Sample Queries)
+
+-- Insert Course
+INSERT INTO Course VALUES (101, 'Introduction to Computer Science', 1);
+
+-- Insert Tutor with CourseID
+INSERT INTO Tutor VALUES (1, 'sule', 'emma', 'sulemma@email.com', '123 Main St', '1234567890', 101, 1);
+
+-- Insert Enrollment with CourseID
+INSERT INTO Enrollment VALUES (1, 1, 101, 1);
+
+-- Insert Department with CourseIDs and TutorIDs
+INSERT INTO Department VALUES (1, 'Computer Science', 'XYZ College', 'Building A', '101', '1');
+
+-- Select Courses
+SELECT * FROM Course;
+
+-- ... Similar CRUD operations for other tables (Student, Enrollment, Tutor, Department)
